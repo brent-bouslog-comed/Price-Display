@@ -32,9 +32,6 @@ String destination_call = "";
 String textmessage = "";
 int msgptr = 0;
 
-double price = 2.9;
-int count = 0;
-
 void setup() {
   // NOTE: if not using PWM out, it should be held low to avoid tx noise
   pinMode(PWM_PIN, OUTPUT);
@@ -60,10 +57,7 @@ void setup() {
 }
 
 void loop() {
-  String fake_message = "1528489500000:" + String(price, 1) + ",";
-  count++;
-  if(count % 4 == 0)
-    price += 0.1;
+  String fake_message = "1528489500000:2.8,";
   
   messagebuff = "KC7IBT,KC7IBT,:" + fake_message;
   prepMessage();
@@ -101,7 +95,7 @@ void prepMessage() {
       radio.setModeReceive();
     }
   }
-  // Wait 2 seconds before we send our beacon again
+  // Wait 2 seconds before we send our beacon again.
   //Serial.println("tick");
   // Wait up to 2.5 seconds to finish sending, and stop transmitter.
   // TODO: This is hackery.
@@ -134,5 +128,3 @@ ISR(ADC_vect) {
     tcnt = 0;
   }
 }
-
-

@@ -23,6 +23,7 @@
 HamShield radio;
 DDS dds;
 AFSK afsk;
+char* arr;
 
 void setup() {
   // NOTE: if not using PWM out, it should be held low to avoid tx noise
@@ -74,7 +75,10 @@ void loop() {
         AFSK::Packet *packet = afsk.getRXPacket();
         Serial.print(F("Packet: "));
         if(packet) {
-          packet->printPacket(&Serial);
+          arr = packet->printPacket(&Serial);
+          String myString = String(arr);
+          Serial.println(stringToPrice(myString));
+          //Serial.println(packet->srcSSID);
           AFSK::PacketBuffer::freePacket(packet);
         }
       }
@@ -89,4 +93,15 @@ ISR(ADC_vect) {
   //dds.clockTick();
   afsk.timer();
   //PORTD &= ~(_BV(2)); // Pin D2 off again
+}
+
+String stringToPrice(String s){
+  int pos = 0;
+  String toReturn;
+  while(s.substring(pos, pos + 1) != ":"){
+    pos++;  
+  }
+  pos++;
+  toReturn = s.substring(pos, pos + 3);
+  return toReturn;
 }

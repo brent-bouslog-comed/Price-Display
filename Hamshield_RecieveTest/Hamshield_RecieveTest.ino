@@ -24,6 +24,7 @@ HamShield radio;
 DDS dds;
 AFSK afsk;
 char* arr;
+String price = "0.0";
 
 void setup() {
   // NOTE: if not using PWM out, it should be held low to avoid tx noise
@@ -46,6 +47,7 @@ void setup() {
   delay(100);
   radio.initialize();
   radio.frequency(145010);
+  //radio.frequency(152840);
   radio.setSQOff();
   Serial.println(F("Frequency"));
   Serial.println(radio.getFrequency());
@@ -76,8 +78,13 @@ void loop() {
         Serial.print(F("Packet: "));
         if(packet) {
           arr = packet->printPacket(&Serial);
+          Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();
+          Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();
+          Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();
           String myString = String(arr);
-          Serial.println(stringToPrice(myString));
+          if(!myString.equals(price))
+            price = myString;
+          Serial.println("The price of Energy is " + stringToPrice(price) + " cents/kWh");
           //Serial.println(packet->srcSSID);
           AFSK::PacketBuffer::freePacket(packet);
         }

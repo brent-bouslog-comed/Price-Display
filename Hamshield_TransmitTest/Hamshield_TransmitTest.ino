@@ -60,14 +60,19 @@ void setup() {
 }
 
 void loop() {
-  String fake_message = "1528489500000:" + String(price, 1) + ",";
+  String currTime = String((millis()/1000)/60) + ";" + String((millis()/1000)%60);
+  String fake_message = currTime + ":" + String(price, 1) + ",";
   count++;
-  if(count % 4 == 0)
+  if(count % 10 == 0)
     price += 0.1;
   
   messagebuff = "KC7IBT,KC7IBT,:" + fake_message;
   prepMessage();
-  delay(1000);
+  
+  if(count % 10 == 0)
+    delay(120000);
+  else
+    delay(1000);
 } 
 
 void prepMessage() { 

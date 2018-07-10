@@ -82,16 +82,18 @@ void loop() {
         AFSK::Packet *packet = afsk.getRXPacket();
         //Serial.print(F("Packet: "));
         if(packet) {
-          Serial.println("Got Packet");
-          arr = packet->printPacket();
+          Serial.println(F("Got Packet"));
+          arr = packet->printPacket(&Serial);
           String myString = String(arr);
           if(!myString.equals(hamPrice))
           {
             hamPrice = myString;
-            price = stringToPrice(hamPrice);
+            price = hamPrice;
           }
           AFSK::PacketBuffer::freePacket(packet);
-          //Serial.println("The price of Energy is " + price + " cents/kWh");
+          Serial.print(F("The price of Energy is "));
+          Serial.print(price);
+          Serial.println(F(" cents/kWh"));
         }
       }
     }
@@ -105,7 +107,7 @@ void loop() {
         clearDecPoint();
       }
 
-    Serial.println("New Number");
+    Serial.println(F("New Number"));
     setDecPoint();
     writeNum(price.toDouble());
     prevPrice = price;
